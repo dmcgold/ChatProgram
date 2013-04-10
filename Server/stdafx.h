@@ -22,7 +22,8 @@
 #define WIN32_LEAN_AND_MEAN
 
 struct serverStruct {
-						u_short portNo;			
+						u_short portNo;	
+						int noConnections;
 						short family;
 						char ipAddress[15];	
 					};

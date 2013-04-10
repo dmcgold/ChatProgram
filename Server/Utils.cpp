@@ -21,12 +21,12 @@ char *WSAError(int errorCode)
 	{
 	case WSATRY_AGAIN		: return ("A temporary failure in name resolution occurred."); break;
 	case WSAEINVAL			: return ("An invalid value was provided for the ai_flags\n member of the pHints parameter.");break;
-	case WSANO_RECOVERY		: return ("A nonrecoverable failure \nin name resolution \noccurred. ");break;
-	case WSAEAFNOSUPPORT	: return ("The ai_family member of \nthe pHints parameter \nis not supported.");break; 
+	case WSANO_RECOVERY		: return ("A non recoverable failure \n in name resolution \n occurred. ");break;
+	case WSAEAFNOSUPPORT	: return ("The ai_family member of \n the pHints parameter \n is not supported.");break; 
 	case 8					: return ("A memory allocation failure occurred.");break;
-	case WSAHOST_NOT_FOUND	: return ("The name does not resolve for\n the supplied \nparameters or the pNodeName \nand pServiceName parameters were not provided.");break;
-	case WSATYPE_NOT_FOUND	: return ("The pServiceName parameter \nis not supported \nfor the specified ai_socktype \nmember of the pHints parameter.");break;
-	case WSAESOCKTNOSUPPORT	: return ("The ai_socktype member of \nthe pHints parameter\n is not supported.");break;
+	case WSAHOST_NOT_FOUND	: return ("The name does not resolve for\n the supplied \n parameters or the pNodeName \n and pServiceName parameters were not provided.");break;
+	case WSATYPE_NOT_FOUND	: return ("The pServiceName parameter \n is not supported \n for the specified ai_socktype \n member of the pHints parameter.");break;
+	case WSAESOCKTNOSUPPORT	: return ("The ai_socktype member of \n the pHints parameter\n is not supported.");break;
 	}
 	return("Unknown error");
 }

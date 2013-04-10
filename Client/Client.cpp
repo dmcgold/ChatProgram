@@ -149,11 +149,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_CONNECT:
 			DialogBox(hInst,MAKEINTRESOURCE(IDD_CONNECTION ),hWnd,Connect);
 			break;
-		case IDM_DISCONNECTACTIVE:
+		case IDM_DISCONNECT:
 			DialogBox(hInst,MAKEINTRESOURCE(IDD_DISCONNECT ),hWnd,Connect);
-			break;
-		case IDM_DISCONNECT_ALL:
-			DialogBox(hInst,MAKEINTRESOURCE(IDD_DISCONNECTALL ),hWnd,Connect);
 			break;
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
@@ -247,7 +244,7 @@ INT_PTR CALLBACK Connect(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				if ( GetWindowTextLength(GetDlgItem(hDlg, IDC_PORTNO)) >0)
 					chatStructure.portNo=GetDlgItemInt(hDlg,IDC_PORTNO,didPass,isSigned);
 				else
-					chatStructure.portNo=1234;
+					chatStructure.portNo=8989;
 
 				len = GetWindowTextLength(GetDlgItem(hDlg, IDC_IPADDRESS));
 				if (len>0)		

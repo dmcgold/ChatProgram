@@ -10,7 +10,7 @@
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
-serverStruct serverStructure = {1234,AF_INET,"127.0.0.1"};
+serverStruct serverStructure = {8989,10,AF_INET,"127.0.0.1"};
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -147,11 +147,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Parse the menu selections:
 		switch (wmId)
 		{
-		case IDM_PORTNO:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_PORTNO), hWnd, ServerClients);
-			break;
-		case IDM_NOOFCONNECTIONS:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_NOCONNECTIONS), hWnd, ServerClients);
+		case IDM_SETTINGS:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_SETTINGS), hWnd, ServerClients);
 			break;
 		case IDM_LISTCLIENTS:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_SERVER_CLIENTS), hWnd, ServerClients);
@@ -220,8 +217,14 @@ INT_PTR CALLBACK ServerClients(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 
 			EndDialog(hDlg, LOWORD(wParam));
 			if (LOWORD(wParam) == IDOK ) 
-			{				
-				serverStructure.portNo=GetDlgItemInt(hDlg, IDC_PORTNO, didPass,isSigned);
+			{		
+				int tmp = serverStructure.portNo=GetDlgItemInt(hDlg, IDC_PORTNO, didPass,isSigned);
+				if (tmp!=0) // user entered data
+					serverStructure.portNo=tmp; // default port
+
+				tmp=serverStructure.noConnections=GetDlgItemInt(hDlg, IDC_NO_CONNECTIONS, didPass,isSigned);
+				if (tmp!=0)
+					serverStructure.noConnections=tmp; // default no of connections
 			}
 			return (INT_PTR)TRUE;
 		}
