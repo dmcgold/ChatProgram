@@ -8,7 +8,9 @@ struct chatStruct {
 					u_short portNo;
 					BOOLEAN privateChat;
 					char nickName[100];
-					char ipAddress[15];						
+					char ipAddress[15];
+					SOCKET	socketClient,
+							socketConnection;
 				};
 
 int ConnectChat( chatStruct );

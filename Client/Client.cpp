@@ -9,6 +9,7 @@
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
+chatStruct chatStructure;
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -17,6 +18,7 @@ LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	ListServers(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	Connect(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK	Settings(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	NickName(HWND, UINT, WPARAM, LPARAM);
 
 
@@ -128,7 +130,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	int wmId, wmEvent;
+	int wmId, 
+		wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
 
@@ -141,7 +144,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 		case IDM_SETTINGS: 
-			DialogBox(hInst,MAKEINTRESOURCE(IDD_CONNECT ),hWnd,Connect);
+			DialogBox(hInst,MAKEINTRESOURCE(IDD_SETTINGS),hWnd,Settings);
 			break;
 		case IDM_LISTSERVERS:
 			DialogBox(hInst,MAKEINTRESOURCE(IDD_LISTSERVERS),hWnd,ListServers);
@@ -205,6 +208,7 @@ INT_PTR CALLBACK ListServers(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 		return (INT_PTR)TRUE;
 
 	case WM_COMMAND:
+		
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
@@ -217,10 +221,6 @@ INT_PTR CALLBACK ListServers(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 
 INT_PTR CALLBACK Connect(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	BOOL isSigned=FALSE;
-	BOOL *didPass=FALSE;
-	chatStruct chatStructure;
-
 	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
@@ -231,34 +231,55 @@ INT_PTR CALLBACK Connect(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
-			if (LOWORD(wParam) == IDOK)
-			{
-				int len = GetWindowTextLength(GetDlgItem(hDlg, IDC_NICKNAME));
-				if (len>0)		
-					GetDlgItemText(hDlg, IDC_NICKNAME, chatStructure.nickName,len+1);
-				else
-					strcpy(chatStructure.nickName,"User");
-			
-				chatStructure.privateChat=IsDlgButtonChecked(hDlg,IDC_PRIVATE_CHAT);
-
-				if ( GetWindowTextLength(GetDlgItem(hDlg, IDC_PORTNO)) >0)
-					chatStructure.portNo=GetDlgItemInt(hDlg,IDC_PORTNO,didPass,isSigned);
-				else
-					chatStructure.portNo=8989;
-
-				len = GetWindowTextLength(GetDlgItem(hDlg, IDC_IPADDRESS));
-				if (len>0)		
-					GetDlgItemText(hDlg, IDC_IPADDRESS, chatStructure.ipAddress,len+1);
-				else
-					strcpy(chatStructure.ipAddress,"127.0.0.1");
-				
-				MessageBox(hDlg, chatStructure.nickName, (chatStructure.privateChat ? "Private":"Public"),MB_OK);
-				ConnectChat(chatStructure);
-			}
-			
+			ConnectChat(chatStructure);
 			return (INT_PTR)TRUE;
-		}
-		
+		}		
+		break;
+	}
+	return (INT_PTR)FALSE;
+}
+
+INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	BOOL isSigned=FALSE;
+	BOOL *didPass=FALSE;
+
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:	
+			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				if (LOWORD(wParam))
+				{
+					int len = GetWindowTextLength(GetDlgItem(hDlg, IDC_NICKNAME));
+					if (len>0)		
+						GetDlgItemText(hDlg, IDC_NICKNAME, chatStructure.nickName,len+1);
+					else
+						strcpy(chatStructure.nickName,"User");
+			
+					chatStructure.privateChat=IsDlgButtonChecked(hDlg,IDC_PRIVATE_CHAT);
+
+					if ( GetWindowTextLength(GetDlgItem(hDlg, IDC_PORTNO)) >0)
+						chatStructure.portNo=GetDlgItemInt(hDlg,IDC_PORTNO,didPass,isSigned);
+					else
+						chatStructure.portNo=6000;
+
+					len = GetWindowTextLength(GetDlgItem(hDlg, IDC_IPADDRESS));
+					if (len>0)		
+						GetDlgItemText(hDlg, IDC_IPADDRESS, chatStructure.ipAddress,len+1);
+					else
+						strcpy(chatStructure.ipAddress,"192.168.1.143");
+				
+					MessageBox(hDlg, chatStructure.nickName, (chatStructure.privateChat ? "Private":"Public"),MB_OK);
+					
+				}
+			return (INT_PTR)TRUE;
+			}		
 		break;
 	}
 	return (INT_PTR)FALSE;

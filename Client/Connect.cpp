@@ -25,9 +25,9 @@ int ConnectChat( chatStruct callWho )
 	hostent *remoteHost = gethostbyaddr((char *) &sAddr.sin_addr, sizeof(sAddr.sin_addr) , sAddr.sin_family);
 	
 	if ( bind(serverSocket, (SOCKADDR*)&sAddr,sizeof(SOCKADDR_IN)) == SOCKET_ERROR )  
-        DisplayError(remoteHost->h_name,WSAGetLastError(), ABORT );        
+		DisplayError("Host Error",WSAGetLastError(), ABORT );        
 
-    if ( listen(serverSocket,0) == SOCKET_ERROR )
+	if ( listen(serverSocket,0) == SOCKET_ERROR )
 		DisplayError("ERROR listening in the server socket",WSAGetLastError(), ABORT );
 
 	MessageBox(NULL,TEXT("Connection OK"),TEXT("Status"),MB_OK);

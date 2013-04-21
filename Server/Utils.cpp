@@ -7,8 +7,13 @@ void DisplayError( char *errorMSG,int errorCode,BOOLEAN exitProgram)
 	char str[10];	
 	char str2[50]="Error Code : ";
 	
-	itoa(errorCode, str, 10);
-	strcat_s(str2,50,str);
+	if(errorCode==0)
+		strcpy(str2,"Warning");
+	else
+	{
+		itoa(errorCode, str, 10);
+		strcat_s(str2,50,str);
+	}
 
 	MessageBox(NULL, TEXT(errorMSG) ,TEXT(str2) ,MB_OK);
 	if(exitProgram)
@@ -30,3 +35,4 @@ char *WSAError(int errorCode)
 	}
 	return("Unknown error");
 }
+

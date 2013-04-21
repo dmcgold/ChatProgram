@@ -18,6 +18,7 @@
 #include <string>
 #include "Utils.h"
 
+#define WM_SERVER_SOCKET WM_USER+200
 
 #define WIN32_LEAN_AND_MEAN
 
@@ -26,4 +27,6 @@ struct serverStruct {
 						int noConnections;
 						short family;
 						char ipAddress[15];	
+						SOCKET	socketServer,
+								socketConnection;
 					};
