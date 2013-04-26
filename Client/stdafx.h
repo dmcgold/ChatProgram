@@ -9,9 +9,16 @@
 #include <memory.h>
 #include <tchar.h>
 #include <windows.h>
-#include "Connect.h"
 #include <string>
 #include "Utils.h"
 
 #define WIN32_LEAN_AND_MEAN
 
+struct chatStruct {
+					u_short portNo;
+					BOOLEAN privateChat;
+					char nickName[100];
+					char ipAddress[15];
+					SOCKET	socketClient,
+							socketConnection;
+				};

@@ -10,9 +10,9 @@
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
-serverStruct server = {6000,10,AF_INET,"192.168.1.100"};
+serverStruct server = {6000,10,AF_INET,"192.168.1.110"};
 BOOLEAN serverStarted=FALSE;
-HWND hChatEdit;
+HWND chatWindow;
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -21,11 +21,12 @@ LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	Settings(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	ListClients(HWND, UINT, WPARAM, LPARAM);
+int ShutDown(HWND ,serverStruct);
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
-					 _In_opt_ HINSTANCE hPrevInstance,
-					 _In_ LPTSTR    lpCmdLine,
-					 _In_ int       nCmdShow)
+					   _In_opt_ HINSTANCE hPrevInstance,
+					   _In_ LPTSTR    lpCmdLine,
+					   _In_ int       nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -35,6 +36,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	HACCEL hAccelTable;
 
 	// Initialize global strings
+	//if (gethostname(server.ipAddress, sizeof(server.ipAddress)) == SOCKET_ERROR)
+	//	DisplayError("Error ",WSAGetLastError(),NO_EXIT);
+	//struct hostent *host = gethostbyname(server.ipAddress);
+
 	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadString(hInstance, IDC_SERVER, szWindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
@@ -59,8 +64,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	return (int) msg.wParam;
 }
-
-
 
 //
 //  FUNCTION: MyRegisterClass()
@@ -100,22 +103,22 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   HWND hWnd;
+	HWND hWnd;
 
-   hInst = hInstance; // Store instance handle in our global variable
+	hInst = hInstance; // Store instance handle in our global variable
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-	  CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
 
-   if (!hWnd)
-   {
-	  return FALSE;
-   }
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 
-   return TRUE;
+	return TRUE;
 }
 
 //
@@ -134,25 +137,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	HDC hdc;
 	TCHAR	*receiveBuffer,
-			*tmpBuffer;
+		*tmpBuffer;
 	addrinfo hints,
-			*sAddr;
+		*sAddr;
 	sockaddr_storage incomingAddress;
-	socklen_t addressSize;	
+	socklen_t addressSize;
 	WSADATA wsaData;
 	WORD wVersionRequested = MAKEWORD(2, 2);
-	char ipAddress[INET_ADDRSTRLEN]; // IP4, IP6 = INET6_ADDRSTRLEN
+	char ipAddressStr[INET_ADDRSTRLEN]; // IP4, IP6 = INET6_ADDRSTRLEN
 	char strPortNo[10]="";
-	
 
 	switch (message)
 	{
 	case WM_CREATE:
-		hChatEdit= CreateWindow( "LISTBOX",NULL,
-			WS_CHILD|WS_VISIBLE|ES_LEFT|WS_BORDER| ES_READONLY|WS_VSCROLL,   
-			40,80,400,400,hWnd,(HMENU)IDE_CHAT, hInst,NULL); 
 		break;
-		case WM_LBUTTONDOWN:
+	case WM_LBUTTONDOWN:
 		{
 			char szFileName[MAX_PATH];
 			HINSTANCE hInstance = GetModuleHandle(NULL);
@@ -161,137 +160,151 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			MessageBox(hWnd, (LPCTSTR)(long)szFileName,(LPCTSTR)L"This program is:", MB_OK | MB_ICONINFORMATION);
 		}
 		break;
-		case WM_SERVER_SOCKET:
+	case WM_SERVER_SOCKET:
 		{
 			int wmEvent=WSAGETSELECTEVENT(lParam);
 			int wmError=WSAGETSELECTERROR(lParam);
 
 			switch(wmEvent)
 			{
-				case FD_ACCEPT:
+			case FD_ACCEPT:
 				{
 					addressSize = sizeof(incomingAddress);
-					server.socketConnection=accept(server.socketServer,(sockaddr *)&incomingAddress,&addressSize);				
+					server.socketConnection=accept(server.socketServer,(sockaddr *)&incomingAddress,&addressSize);
 				}
 				break;
-				case FD_READ:
+			case FD_READ:
 				{
 					receiveBuffer = new TCHAR[100];
 					tmpBuffer = new TCHAR[130];
-					recv(server.socketConnection,receiveBuffer,strlen(receiveBuffer)+1,0);									
-					sockaddr_in *s = (sockaddr_in *)&incomingAddress;					
-					inet_ntop(AF_INET, &s->sin_addr , ipAddress, sizeof ipAddress);
-					wsprintf(tmpBuffer,"From IP %s:%d : %s",ipAddress,ntohs(s->sin_port),receiveBuffer);									
-					SendMessage(hChatEdit,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);						
+					receiveBuffer="";
+					recv(server.socketConnection,receiveBuffer,strlen(receiveBuffer)+1,0);
+					sockaddr_in *s = (sockaddr_in *)&incomingAddress;
+					inet_ntop(AF_INET, &s->sin_addr , ipAddressStr, sizeof ipAddressStr);
+					wsprintf(tmpBuffer,"From IP %s:%d : %s",ipAddressStr,ntohs(s->sin_port),receiveBuffer);
+
+					SendMessage(chatWindow,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);
 					delete []receiveBuffer;
 					delete []tmpBuffer;
 				}
 				break;
-				case FD_CLOSE:
+			case FD_CLOSE:
 				{
 					closesocket(server.socketServer);
 					closesocket(server.socketConnection);
-					//isAccepted=false;
-					//InvalidateRect(hWnd,NULL,1);
 				}
 				break;
 			}
 		}
-		case WM_COMMAND:
-			wmId    = LOWORD(wParam);
-			wmEvent = HIWORD(wParam);
-			
-			// Parse the menu selections:
-			switch (wmId)
-			{
-			case IDM_SETTINGS:
+
+	case WM_COMMAND:
+		wmId    = LOWORD(wParam);
+		wmEvent = HIWORD(wParam);
+
+		// Parse the menu selections:
+		switch (wmId)
+		{
+		case IDM_SETTINGS:
 			{
 				DialogBox(hInst, MAKEINTRESOURCE(IDD_SETTINGS), hWnd, Settings);
 			}
 			break;
-			case IDM_LISTCLIENTS:
+		case IDM_LISTCLIENTS:
 			{
 				DialogBox(hInst, MAKEINTRESOURCE(IDD_CLIENTS), hWnd, ListClients);
 			}
 			break;
-			case IDM_STARTSERVER:
-			{	
+		case IDM_STARTSERVER:
+			{
 				if(serverStarted)
 				{
-					DisplayError("Server already running",0,NO_EXIT);
+					DisplayError("Serer already started",0,NO_EXIT);
 					break;
 				}
 				else
 					serverStarted=TRUE;
+				chatWindow = CreateWindow(	"LISTBOX",
+					"Chat Window",
+					WS_CHILD|WS_VISIBLE|ES_LEFT|WS_BORDER|
+					ES_READONLY|WS_VSCROLL|WS_HSCROLL|WS_MAXIMIZEBOX|
+					WS_MINIMIZEBOX|WS_OVERLAPPEDWINDOW,
+					50,50,
+					1000,400,
+					hWnd,
+					(HMENU)IDE_CHAT,
+					hInst,
+					NULL);
 				SecureZeroMemory (&hints, sizeof(hints));
 
 				if ((WSAStartup(wVersionRequested, &wsaData) != 0) || //not correct Winsock version
 					(LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2))
 				{
 					WSACleanup();
-					DisplayError("WSA Start-up Failure",WSAGetLastError(),EXIT);
+					DisplayError("WSA Error",WSAGetLastError(),EXIT);
 				}
 				hints.ai_family = server.family;
 				hints.ai_socktype = SOCK_STREAM;
-				hints.ai_protocol = IPPROTO_TCP;			
+				hints.ai_protocol = IPPROTO_TCP;
 
 				_itoa(server.portNo,strPortNo,10);
 
 				if ( getaddrinfo(server.ipAddress,strPortNo, &hints, &sAddr) !=0 )
-					DisplayError(WSAError(WSAGetLastError()),WSAGetLastError(),EXIT);
-				
+					DisplayError("Error with address",WSAGetLastError(),EXIT);
+
 				server.socketServer = socket(sAddr->ai_family, sAddr->ai_socktype, sAddr->ai_protocol);
-	
+
 				if ( WSAAsyncSelect( server.socketServer,hWnd,WM_SERVER_SOCKET,FD_ACCEPT | FD_READ ))
 				{
-					int wsaaError=WSAGetLastError(); // in case it changes after close socket
+					int wsaError=WSAGetLastError(); // in case it changes after close socket
 					closesocket(server.socketServer);
 					WSACleanup();
-					DisplayError("WSAAsyncSelect Error",wsaaError,TRUE);
+					DisplayError( "WSAAsyncSelect error",wsaError,TRUE);
 				}
-				
-				if ( bind(server.socketServer, sAddr->ai_addr, sAddr->ai_addrlen) == SOCKET_ERROR )  
-					DisplayError(WSAError(WSAGetLastError()), WSAGetLastError(), TRUE );       
-														
-				if (listen(server.socketServer, server.noConnections) == SOCKET_ERROR)
-					DisplayError("ERROR listening in the server socket",WSAGetLastError(), TRUE );			
-				
 
+				if ( bind(server.socketServer, sAddr->ai_addr, sAddr->ai_addrlen) == SOCKET_ERROR )
+					DisplayError( "Bind error",WSAGetLastError(), TRUE );
+
+				if (listen(server.socketServer, server.noConnections) == SOCKET_ERROR)
+					DisplayError("Listening error",WSAGetLastError(), TRUE );
 			}
 			break;
-			case IDM_STOPSERVER:
+		case IDM_STOPSERVER:
 			{
-				int iResult = closesocket(server.socketServer);
-				if (iResult == SOCKET_ERROR) 
-					wprintf(L"close socket function failed with error %d\n", WSAGetLastError());
-				WSACleanup(); // Server has been stopped so clean up anyway				
+				if(serverStarted)
+					ShutDown(chatWindow,server);
+				serverStarted=FALSE;
 			}
 			break;
-			case IDM_ABOUT:
+		case IDM_ABOUT:
 			{
 				DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			}
 			break;
-			case IDM_EXIT:
+		case IDM_EXIT:
 			{
-				WSACleanup(); //in case user just exits
+				if(serverStarted)
+					ShutDown(chatWindow,server);
+				serverStarted=FALSE;
 				DestroyWindow(hWnd);
 			}
 			break;
-			default:
-				return DefWindowProc(hWnd, message, wParam, lParam);
-			}
-			break;
-		case WM_PAINT:
-			hdc = BeginPaint(hWnd, &ps);
-			// TODO: Add any drawing code here...
-			EndPaint(hWnd, &ps);
-			break;
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+		break;
+	case WM_PAINT:
+		hdc = BeginPaint(hWnd, &ps);
+		// TODO: Add any drawing code here...
+		EndPaint(hWnd, &ps);
+		break;
+	case WM_CLOSE:
+		DestroyWindow(hWnd);
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 }
@@ -320,7 +333,7 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	BOOL isSigned=FALSE;
 	BOOL *didPass=FALSE;
-	
+
 	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
@@ -330,14 +343,12 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
-
 			EndDialog(hDlg, LOWORD(wParam));
-			if (LOWORD(wParam) == IDOK ) 
-			{		
+			if (LOWORD(wParam) == IDOK )
+			{
 				int tmp = server.portNo=GetDlgItemInt(hDlg, IDC_PORTNO, didPass,isSigned);
 				if (tmp!=0) // user entered data
 					server.portNo=tmp; // default port
-
 				tmp=server.noConnections=GetDlgItemInt(hDlg, IDC_NO_CONNECTIONS, didPass,isSigned);
 				if (tmp!=0)
 					server.noConnections=tmp; // default no of connections
@@ -366,4 +377,20 @@ INT_PTR CALLBACK ListClients(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+int ShutDown(HWND hWnd,serverStruct s)
+{
+	int errorStatus=0;
+	char closeMSG[]="Server Shutting down";
+	send(s.socketConnection,closeMSG,strlen(closeMSG)+1,0); //?????
+	DestroyWindow(hWnd);
+	int iResult = closesocket(s.socketServer);
+	if (iResult == SOCKET_ERROR)
+	{
+		errorStatus=WSAGetLastError();
+		DisplayError("Close socket failed", errorStatus,NO_EXIT);
+	}
+	WSACleanup(); // Server has been stopped so clean up anyway
+	return errorStatus;
 }

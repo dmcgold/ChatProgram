@@ -1,38 +1,86 @@
 #include "Utils.h"
-
 #pragma warning(disable: 4996)
 
-void DisplayError( char *errorMSG,int errorCode,BOOLEAN exitProgram)
+void DisplayError(char *errorCodeStr,int errorCode,BOOLEAN exitProgram)
 {
-	char str[10];	
-	char str2[50]="Error Code : ";
-	
-	if(errorCode==0)
-		strcpy(str2,"Warning");
-	else
-	{
-		itoa(errorCode, str, 10);
-		strcat_s(str2,50,str);
-	}
+	char str[50];
+	char helpText[100]="";
+	char strCode[6];
+	helpStruc helpDetails;
+	/*HWND helpWindow;
+	TCHAR tmpBuffer[1000];*/
 
-	MessageBox(NULL, TEXT(errorMSG) ,TEXT(str2) ,MB_OK);
+	SecureZeroMemory(&helpDetails,sizeof(helpDetails));
+
+	if(errorCode!=0)
+	{
+		strcpy(str,errorCodeStr);
+		strcat_s(str,50," : ");
+		_itoa(errorCode, strCode, 10);
+		strcat_s(str,strlen(str)+strlen(strCode)+1,strCode);
+		if(WSAError(errorCode,helpDetails))
+		{
+			strcpy(helpText,helpDetails.errorCodeStr);
+			strcat_s(helpText,100," : \n");
+			strcat_s(helpText,100,helpDetails.errorHelp);
+		}
+		/*helpWindow = CreateWindow(	"LISTBOX",
+		"Help",
+		WS_VISIBLE|ES_LEFT|WS_BORDER|
+		ES_READONLY|WS_VSCROLL|WS_HSCROLL,
+		50,50,
+		1000,400,
+		NULL,
+		NULL,
+		NULL,
+		NULL);
+		if(helpWindow==NULL)
+		{
+		char errorStr[100];
+		_itoa(GetLastError(),errorStr,10);
+		MessageBox(NULL, TEXT("Problem with Window") ,TEXT(errorStr) ,MB_OK);
+		}
+		else
+		{
+		wsprintf(tmpBuffer,"Error Code: %d",helpDetails.errorCode);
+		SendMessage(helpWindow,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);
+		wsprintf(tmpBuffer,"Error name: %s",helpDetails.errorCodeStr);
+		SendMessage(helpWindow,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);
+		wsprintf(tmpBuffer,"Brief explanation: %s",helpDetails.errorHelp);
+		SendMessage(helpWindow,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);
+		wsprintf(tmpBuffer,"More information: %s",helpDetails.detailedHelp);
+		SendMessage(helpWindow,LB_ADDSTRING|LB_SETHORIZONTALEXTENT , 1000, (LPARAM)tmpBuffer);
+		}*/
+
+		MessageBox(NULL, TEXT(helpText) ,TEXT(str) ,MB_OK);
+	}
+	else
+		MessageBox(NULL, TEXT(errorCodeStr), TEXT("Warning") ,MB_OK);
 	if(exitProgram)
 		exit(1);
 }
 
-char *WSAError(int errorCode)
+boolean WSAError(int errorCode,helpStruc &help)
 {
-	switch (errorCode)
-	{
-	case WSATRY_AGAIN		: return ("A temporary failure in name resolution occurred."); break;
-	case WSAEINVAL			: return ("An invalid value was provided for the ai_flags\n member of the pHints parameter.");break;
-	case WSANO_RECOVERY		: return ("A non recoverable failure \n in name resolution \n occurred. ");break;
-	case WSAEAFNOSUPPORT	: return ("The ai_family member of \n the pHints parameter \n is not supported.");break; 
-	case 8					: return ("A memory allocation failure occurred.");break;
-	case WSAHOST_NOT_FOUND	: return ("The name does not resolve for\n the supplied \n parameters or the pNodeName \n and pServiceName parameters were not provided.");break;
-	case WSATYPE_NOT_FOUND	: return ("The pServiceName parameter \n is not supported \n for the specified ai_socktype \n member of the pHints parameter.");break;
-	case WSAESOCKTNOSUPPORT	: return ("The ai_socktype member of \n the pHints parameter\n is not supported.");break;
-	}
-	return("Unknown error");
-}
+	FILE *fpHelp=fopen(helpFile,"rb");
 
+	if(fpHelp==NULL)
+	{
+		strcpy(help.errorCodeStr,"Can't open help file");
+		help.errorCode=-1;
+		return (false);
+	}
+
+	fread(&help,sizeof(help),1,fpHelp);
+	while ((!feof(fpHelp)) && (help.errorCode!=errorCode))
+		fread(&help,sizeof(help),1,fpHelp);
+	fclose(fpHelp);
+	if(help.errorCode==errorCode)
+		return (true);
+	else
+	{
+		strcpy(help.errorCodeStr,"Error not found");
+		help.errorCode=-1;
+		return (false);
+	}
+}
