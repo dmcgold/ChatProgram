@@ -16,17 +16,26 @@
 #include <tchar.h>
 #include <windows.h>
 #include <string>
+#include <string.h>
 #include "Utils.h"
 
 #define WM_SERVER_SOCKET WM_USER+200
 
 #define WIN32_LEAN_AND_MEAN
 
+struct clientStruct {
+	char nickName[50];
+	char ipAddress[INET_ADDRSTRLEN]; // IP4, IP6 = INET6_ADDRSTRLEN
+	SOCKET inSocket;
+	clientStruct *next;
+	char *sendTo;
+};
+
 struct serverStruct {
-						u_short portNo;	
-						int noConnections;
-						short family;
-						char ipAddress[15];	
-						SOCKET	socketServer,
-								socketConnection;
-					};
+	u_short portNo;
+	char ipAddress[INET_ADDRSTRLEN]; // IP4, IP6 = INET6_ADDRSTRLEN
+	SOCKET	inSocket;
+	short family;
+	int maxConnections,
+		noConnections;
+};

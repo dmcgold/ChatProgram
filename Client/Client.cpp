@@ -11,6 +11,10 @@ TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 chatStruct client;
 boolean isConnected=FALSE;
+HWND chatWindow;
+WSADATA wsaData = {0};
+sockaddr_in sAddr;
+SOCKADDR_IN clientAddr={0,0,0,0};
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -18,13 +22,11 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	ListServers(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	Connect(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	Disconnect(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	Settings(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	NickName(HWND, UINT, WPARAM, LPARAM);
-HWND chatWindow;
-WSADATA wsaData = {0};
-sockaddr_in sAddr;
+int DisconnectSocket(void);
+int ConnectSocket(HWND &,HWND);
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 					   _In_opt_ HINSTANCE hPrevInstance,
@@ -136,16 +138,83 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
-	SOCKADDR_IN clientAddr={0,0,0,0};
+	TCHAR	*inBuffer,
+		*tmpBuffer;
+	sockaddr_storage targetAddress;
+	char ipAddressStr[INET_ADDRSTRLEN]; // IP4, IP6 = INET6_ADDRSTRLEN
 
 	switch (message)
 	{
+	case WM_CLIENT_SOCKET:
+		{
+			int wmEvent=WSAGETSELECTEVENT(lParam);
+			int wmError=WSAGETSELECTERROR(lParam);
+
+			switch(wmEvent)
+			{
+			case FD_CONNECT:
+				{
+					if(wmError!=NULL)
+						DisplayError("Connection Error",wmError,FALSE);
+					else
+						isConnected=TRUE;
+				}
+				break;
+			case FD_READ:
+				{
+					if(wmError!=NULL)
+						DisplayError("Read Error",wmError,FALSE);
+					inBuffer = new TCHAR[100];
+					tmpBuffer = new TCHAR[130];
+					inBuffer="";
+					recv(client.clientSocket,inBuffer,strlen(inBuffer)+1,0);
+					sockaddr_in *s = (sockaddr_in *)&targetAddress;
+					inet_ntop(AF_INET, &s->sin_addr , ipAddressStr, sizeof ipAddressStr);
+					wsprintf(tmpBuffer,"From Server: %s",inBuffer);
+
+					SendMessage(chatWindow,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);
+					delete []inBuffer;
+					delete []tmpBuffer;
+				}
+				break;
+			}
+		}
 	case WM_COMMAND:
 		wmId    = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
 		// Parse the menu selections:
 		switch (wmId)
 		{
+		case WM_CHAR:
+			if(wParam==13)
+			{
+				// Get current selection in listbox
+				int itemIndex = (int) ::SendMessage(chatWindow, LB_GETCURSEL, (WPARAM)0, (LPARAM) 0);
+				if (itemIndex == LB_ERR)
+				{
+					// No selection
+					break;
+				}
+
+				// Get length of text in listbox
+				int textLen = (int) ::SendMessage(chatWindow, LB_GETTEXTLEN, (WPARAM) itemIndex, 0);
+
+				// Allocate buffer to store text (consider +1 for end of string)
+				TCHAR * textBuffer = new TCHAR[textLen + 1];
+
+				// Get actual text in buffer
+				::SendMessage(chatWindow, LB_GETTEXT, (WPARAM) itemIndex, (LPARAM) textBuffer );
+
+				// Show it
+				::MessageBox(NULL, textBuffer, _T("Selected Text from Listbox:"), MB_OK);
+
+				// Free text
+				delete [] textBuffer;
+
+				// Avoid dangling references
+				textBuffer = NULL;
+			}
+			break;
 		case IDM_SETTINGS:
 			DialogBox(hInst,MAKEINTRESOURCE(IDD_SETTINGS),hWnd,Settings);
 			break;
@@ -153,58 +222,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			DialogBox(hInst,MAKEINTRESOURCE(IDD_LISTSERVERS),hWnd,ListServers);
 			break;
 		case IDM_CONNECT:
-			{
-				if ( WSAStartup(MAKEWORD(2,2), &wsaData ) !=0 )
-					return 1;
-
-				sAddr.sin_family = AF_INET;
-				sAddr.sin_addr.s_addr = inet_addr( client.ipAddress );
-				sAddr.sin_port = htons( client.portNo );
-
-				if ( client.socketClient = socket(AF_INET, SOCK_STREAM,IPPROTO_TCP) == INVALID_SOCKET )
-				{
-					MessageBox(NULL,TEXT("Socket Initialisation Error"),TEXT("Invalid Socket"),MB_OK );
-					return 1;
-				}
-
-				connect(client.socketClient,(SOCKADDR*)&clientAddr,sizeof(SOCKADDR));
-
-				chatWindow = CreateWindow(	"LISTBOX",
-					"Chat Window",
-					WS_CHILD|WS_VISIBLE|ES_LEFT|WS_BORDER|
-					WS_VSCROLL|WS_HSCROLL|WS_MAXIMIZEBOX|
-					WS_MINIMIZEBOX|WS_OVERLAPPEDWINDOW,
-					50,50,
-					1000,400,
-					hWnd,
-					(HMENU)IDW_CHAT,
-					hInst,
-					NULL);
-				isConnected=TRUE;
-			}
+			client.clientSocket=ConnectSocket(chatWindow,hWnd);
 			break;
 		case IDM_DISCONNECT:
-			{
-				if(isConnected)
-				{
-					DialogBox(hInst,MAKEINTRESOURCE(IDD_DISCONNECT ),hWnd,Disconnect);
-					WSACleanup();
-				}
-			}
+			if(isConnected)
+				DialogBox(hInst,MAKEINTRESOURCE(IDD_DISCONNECT ),hWnd,Disconnect);
 			break;
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
 		case IDM_EXIT:
 			{
-				int iResult = closesocket(client.socketClient);
-				if (iResult == SOCKET_ERROR)
-				{
-					int errorStatus=WSAGetLastError();
-					DisplayError("Close socket failed", errorStatus,FALSE);
-				}
+				DisconnectSocket();
 				DestroyWindow(hWnd);
-				WSACleanup();
 			}
 			break;
 		default:
@@ -284,32 +314,8 @@ INT_PTR CALLBACK Disconnect(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 			if ((LOWORD(wParam) == IDOK) && closeWindow)
 			{
 				DestroyWindow(chatWindow);
-				int iResult = closesocket(client.socketClient);
-				if (iResult == SOCKET_ERROR)
-				{
-					int errorStatus=WSAGetLastError();
-					DisplayError("Close socket failed", errorStatus,FALSE);
-				}
+				DisconnectSocket();
 			}
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
-}
-
-INT_PTR CALLBACK Connect(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
 		}
 		break;
@@ -381,4 +387,78 @@ INT_PTR CALLBACK NickName(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+int ConnectSocket(HWND &chatWindow,HWND hWnd)
+{
+	addrinfo	hints,
+		*sAddr;
+	char strPortNo[10]="";
+	WORD wVersionRequested = MAKEWORD(2, 2);
+	WSADATA wsaData;
+	int serverSocket;
+
+	chatWindow = CreateWindow(	"LISTBOX",
+		"Chat Window",
+		WS_CHILD|WS_VISIBLE|ES_LEFT|WS_BORDER|
+		ES_READONLY|WS_VSCROLL|WS_HSCROLL|WS_MAXIMIZEBOX|
+		WS_MINIMIZEBOX|WS_OVERLAPPEDWINDOW,
+		50,50,
+		1000,400,
+		hWnd,
+		(HMENU)IDC_CLIENT,
+		hInst,
+		NULL
+		);
+	SecureZeroMemory (&hints, sizeof(hints));
+
+	if ((WSAStartup(wVersionRequested, &wsaData) != 0) || //not correct Winsock version
+		(LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2))
+	{
+		WSACleanup();
+		DisplayError("WSA Error",WSAGetLastError(),TRUE);
+	}
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+
+	_itoa(client.portNo,strPortNo,10);
+
+	if ( getaddrinfo(client.ipAddress,strPortNo, &hints, &sAddr) !=0 )
+		DisplayError("Error with address",WSAGetLastError(),TRUE);
+
+	serverSocket = socket(sAddr->ai_family, sAddr->ai_socktype, sAddr->ai_protocol);
+
+	if ( WSAAsyncSelect( serverSocket,hWnd,WM_CLIENT_SOCKET,FD_CONNECT | FD_READ))
+	{
+		int wsaError=WSAGetLastError(); // in case it changes after close socket
+		closesocket(serverSocket);
+		WSACleanup();
+		DisplayError( "WSAAsyncSelect error",wsaError,TRUE);
+	}
+
+	boolean bOptVal = TRUE;
+
+	if(setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, (char *) &bOptVal, sizeof(int)) == SOCKET_ERROR)
+	{
+		DisplayError("getsockopt for SO_KEEPALIVE failed with error: ", WSAGetLastError(),FALSE);
+	}
+
+	isConnected = (connect(serverSocket,(SOCKADDR*)&sAddr,sizeof(SOCKADDR))!=SOCKET_ERROR);
+	return serverSocket;
+}
+
+int DisconnectSocket(void)
+{
+	if(!isConnected)
+		return 1;
+	int errorStatus=0;
+	if (closesocket(client.clientSocket) == SOCKET_ERROR)
+	{
+		errorStatus=WSAGetLastError();
+		DisplayError("Close socket failed", errorStatus,FALSE);
+	}
+	WSACleanup();
+	isConnected=FALSE;
+	return errorStatus;
 }
