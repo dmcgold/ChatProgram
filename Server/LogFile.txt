@@ -1,0 +1,899 @@
+
+Serious Error  logged [24/05/2013]:[14:01:07]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:02:13]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:03:13]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:05:53]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:09:55]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:21:08]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:33:28]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:36:29]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:45:03]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:47:33]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:50:57]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:53:02]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[14:58:41]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:01:51]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:04:41]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:17:56]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:19:16]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:20:42]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:24:47]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:26:37]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:51:24]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:53:25]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:58:04]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[15:59:16]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Serious Error  logged [24/05/2013]:[16:00:25]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+S logged [25/05/2013]:[00:31:16]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+S logged [25/05/2013]:[00:31:16]
+Error Number : 10049
+Error Code: WSAEADDRNOTAVAIL
+Error Description: Cannot assign requested address.
+-------------------------------------------------------------
+S logged [25/05/2013]:[00:31:23]
+Error Number : 10049
+Error Code: WSAEADDRNOTAVAIL
+Error Description: Cannot assign requested address.
+-------------------------------------------------------------
+S logged [25/05/2013]:[00:31:40]
+Error Number : 10049
+Error Code: WSAEADDRNOTAVAIL
+Error Description: Cannot assign requested address.
+-------------------------------------------------------------
+
+Serious Error logged [25/05/2013]:[15:29:25]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------
+Notice logged: [26/05/2013]:[15:3739]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [26/05/2013]:[15:3739]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [26/05/2013]:[15:3740]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [26/05/2013]:[15:4450]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [26/05/2013]:[15:4450]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [26/05/2013]:[15:4451]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[01:2817]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[01:2817]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Serious Error logged [28/05/2013]:[01:28:19]
+Error Number : 10049
+Error Code: WSAEADDRNOTAVAIL
+Error Description: Cannot assign requested address.
+-------------------------------------------------------------------------------
+Serious Error logged: [28/05/2013]:[01:2821]
+Couldn't start server
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[02:0732]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[02:0732]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Serious Error logged: [28/05/2013]:[02:0740]
+Can't open window
+-------------------------------------------------------------------------------
+Serious Error logged: [28/05/2013]:[02:0813]
+Can't open window
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[02:0821]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[02:1007]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[02:1007]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[02:1033]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[03:1023]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[03:1023]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[03:1355]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[03:1355]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[03:1625]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[03:1625]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:1523]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:1523]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:1543]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:1553]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:1601]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:2022]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:2022]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:2051]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:2312]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:3020]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:3020]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:3031]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[09:3134]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0005]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0005]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0019]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0046]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0222]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0821]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0821]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0830]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:0911]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1042]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1042]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1057]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1243]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1243]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1308]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1638]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1638]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1642]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1710]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1710]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1722]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1941]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1941]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:1957]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:2011]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:2019]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:2022]
+Relaying incoming message to ??????????????????????????????????????????????????????????????????????????????????????????????d 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:2234]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:2234]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:2239]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3357]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3357]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3415]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3730]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3730]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3734]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3804]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3839]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3839]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:3904]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:4120]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:4252]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:4252]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:4837]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:4910]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:4910]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5101]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5325]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5444]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5444]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5448]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5503]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5743]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5743]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5753]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[10:5824]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:0742]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:0742]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:0750]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:0805]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct *,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:1521]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:1521]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:1528]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4345]
+int __cdecl GetIncoming(struct clientMSGStruct *,struct clientStruct,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4351]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4850]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4850]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4857]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4939]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4939]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[11:4944]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:2840]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:2840]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:2846]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:3125]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:3125]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:3225]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4119]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4119]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4123]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4421]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4421]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4425]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4603]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4603]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:4607]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5021]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5021]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5025]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5258]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5258]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5302]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5530]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5530]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5536]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5604]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5607]
+Relaying incoming message to ??????????????????????????????????????????????????????????????????????????????????????????????d 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5633]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5633]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5637]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5812]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5813]
+Relaying incoming message to ??????????????????????????????????????????????????????????????????????????????????????????????d 
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5858]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5858]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[14:5902]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:3929]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:3929]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:3932]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:4313]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:4313]
+Server on hostname: StarWin
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:4319]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[15:5449]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:1721]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:1721]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:1726]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:2645]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:2645]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:2652]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:2853]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:3120]
+Shutting Down 
+-------------------------------------------------------------------------------
+Serious Error logged [28/05/2013]:[23:31:20]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:3305]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:3305]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:3325]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4347]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4347]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4448]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4801]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4835]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4835]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:4932]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:5527]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:5527]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Serious Error logged [28/05/2013]:[23:55:29]
+Error Number : 10049
+Error Code: WSAEADDRNOTAVAIL
+Error Description: Cannot assign requested address.
+-------------------------------------------------------------------------------
+Serious Error logged: [28/05/2013]:[23:5530]
+Couldn't start server
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:5539]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:5539]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [28/05/2013]:[23:5605]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2118]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2118]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2124]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2319]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2319]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2322]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2412]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2415]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:2923]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:3013]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:4230]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:4230]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:4251]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:4321]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:4323]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5054]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5125]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5125]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Serious Error logged [29/05/2013]:[00:51:28]
+Error Number : 10049
+Error Code: WSAEADDRNOTAVAIL
+Error Description: Cannot assign requested address.
+-------------------------------------------------------------------------------
+Serious Error logged: [29/05/2013]:[00:5129]
+Couldn't start server
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5139]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5139]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5514]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5612]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[00:5625]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:0439]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:0439]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:0459]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:0604]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:0606]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:1038]
+void __cdecl RelayMSG(struct HWND__ *,struct clientStruct *,struct clientMSGStruct,__w64 unsigned int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:1039]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:3316]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:3316]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:3330]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:3356]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:3439]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [29/05/2013]:[01:3709]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:4739]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:4739]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:4758]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:4922]
+Relaying incoming message to ???????????????????????????????????? 
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5416]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5416]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5437]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5457]
+Relaying incoming message to  
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5719]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5719]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[22:5725]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [03/06/2013]:[23:0058]
+Relaying incoming message to  
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[00:0610]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[00:0610]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[00:0809]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[00:0838]
+Shutting Down 
+-------------------------------------------------------------------------------
+Serious Error logged [04/06/2013]:[00:08:38]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[00:4932]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[00:4932]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:0613]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:0614]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:0754]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:1838]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:1838]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:1853]
+Shutting Down 
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:3903]
+Shutting Down 
+-------------------------------------------------------------------------------
+Serious Error logged [04/06/2013]:[01:39:03]
+Error Number : 10093
+Error Code: WSANOTINITIALISED
+Error Description: Successful WSAStartup not yet performed.
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:4824]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:4824]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:5512]
+int __cdecl StartServer(struct HWND__ *,struct serverStruct *)
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:5512]
+Server on hostname: Laptop_v8
+-------------------------------------------------------------------------------
+Notice logged: [04/06/2013]:[01:5513]
+int __cdecl AddConnection(struct clientStruct **,int,int)
+-------------------------------------------------------------------------------

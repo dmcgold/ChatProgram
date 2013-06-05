@@ -1,7 +1,13 @@
-// Chat Program.cpp : Defines the entry point for the application.
-//
+/*********************************************************************/
+/******					Client application						******/
+/******				Author: Danny McGoldrick					******/
+/******															******/
+/******				Diploma Information Technology				******/
+/******							2013							******/
+/*********************************************************************/
+#include "client.h"
+
 #pragma warning(disable: 4996)
-#include "stdafx.h"
 
 #define MAX_LOADSTRING 100
 
@@ -9,24 +15,14 @@
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
-chatStruct client;
-boolean isConnected=FALSE;
-HWND chatWindow;
-WSADATA wsaData = {0};
-sockaddr_in sAddr;
-SOCKADDR_IN clientAddr={0,0,0,0};
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	ListServers(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	Disconnect(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	Settings(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	NickName(HWND, UINT, WPARAM, LPARAM);
-int DisconnectSocket(void);
-int ConnectSocket(HWND &,HWND);
+INT_PTR CALLBACK	ListServers(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK ChangeNickName(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 					   _In_opt_ HINSTANCE hPrevInstance,
@@ -40,9 +36,11 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	MSG msg;
 	HACCEL hAccelTable;
 
+	setlocale( LC_ALL, "Australia" );
+
 	// Initialize global strings
 	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadString(hInstance, IDC_CHATPROGRAM, szWindowClass, MAX_LOADSTRING);
+	LoadString(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
 
 	// Perform application initialization:
@@ -50,11 +48,19 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	{
 		return FALSE;
 	}
+	_tcscpy(client.ipAddress,TEXT("127.0.0.1"));
+	_tcscpy(client.nickName,TEXT("Guest"));
+	client.portNo=6000;
+	client.next='\0';
+	client.inSocket=0;
+	_tcscpy(server.ipAddress,TEXT("192.168.1.110"));
+	server.portNo=client.portNo;
+	server.isConnected=FALSE;
 
-	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CHATPROGRAM));
+	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
 	// Main message loop:
-	while (GetMessage(&msg, NULL, 0, 0) > 0)
+	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
 		{
@@ -62,7 +68,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 	}
-
 	return (int) msg.wParam;
 }
 
@@ -82,10 +87,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.cbClsExtra		= 0;
 	wcex.cbWndExtra		= 0;
 	wcex.hInstance		= hInstance;
-	wcex.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CHATPROGRAM));
+	wcex.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CLIENT));
 	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-	wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_CHATPROGRAM);
+	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+2);
+	wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_CLIENT);
 	wcex.lpszClassName	= szWindowClass;
 	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -108,9 +113,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	hInst = hInstance; // Store instance handle in our global variable
 
+	/*hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);*/
 	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
-
+		0, 0,1000, 700, NULL, NULL, hInstance, NULL);
 	if (!hWnd)
 	{
 		return FALSE;
@@ -134,17 +140,89 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	int wmId,
-		wmEvent;
+	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
-	TCHAR	*inBuffer,
-		*tmpBuffer;
-	sockaddr_storage targetAddress;
-	char ipAddressStr[INET_ADDRSTRLEN]; // IP4, IP6 = INET6_ADDRSTRLEN
-
+	int bufferSize=BUFFER_SIZE;
+	TCHAR *inBuffer = (TCHAR *) _malloca (sizeof(TCHAR)*BUFFER_SIZE);
+	RECT cRect = { 0 };
+	int userLength=100;
+	clientStruct *tmpClient=&client;
+	
 	switch (message)
 	{
+	case WM_LBUTTONDOWN:
+		{
+			ShowWindow(userWin,SW_HIDE);
+		}
+		break;
+	case WM_SIZE:
+		{
+			GetClientRect(hWnd,&cRect);														// Get windows dimmensions if changed
+			cRect.bottom-=50;
+			SetWindowPos(chatWin,NULL,cRect.left,cRect.top,cRect.right,cRect.bottom,SWP_NOZORDER);	// Resize all the windows`
+			cRect.right-=50;
+			SetWindowPos(inputWin,NULL,0,cRect.bottom,cRect.right,40,SWP_NOZORDER);
+			SetWindowPos(sendBTN,NULL,cRect.right, cRect.bottom, 50, 40,SWP_NOZORDER);
+		}
+		break;
+	case WM_CREATE:
+		{
+			RECT	Rect,
+				rChat;
+
+			GetClientRect(hWnd,&Rect);											// Get client window dimmensions
+			rChat = Rect;
+			rChat.left=0;
+			rChat.top=0;
+			rChat.bottom -=20;
+
+			chatWin = CreateWindow(
+				TEXT("LISTBOX"),
+				NULL,
+				WS_CHILD ,
+				rChat.left,rChat.top,
+				rChat.right,rChat.bottom+5,
+				hWnd,
+				NULL,
+				hInst,
+				NULL);
+
+			inputWin=CreateWindow(
+				TEXT("EDIT"),
+				NULL,
+				WS_CHILD|ES_LEFT|ES_AUTOHSCROLL,
+				0,rChat.bottom,
+				rChat.right-35,40,
+				hWnd,
+				HMENU(IDE_SEND_TEXT),
+				hInst,
+				NULL);
+
+			sendBTN=CreateWindow(
+				TEXT("BUTTON"),
+				TEXT("Send"),
+				WS_CHILD|ES_LEFT|WS_BORDER,
+				rChat.right-50,rChat.bottom,
+				35,40,
+				hWnd,
+				HMENU(IDB_SEND_TEXT),
+				hInst,
+				NULL);
+
+			EnableWindow(inputWin,FALSE);
+
+			userWin = CreateWindow (
+				TEXT("LISTBOX"),
+				TEXT("Users Online"),
+				WS_CHILD|ES_LEFT|ES_AUTOHSCROLL,
+				200,0,200,500,
+				hWnd,
+				HMENU(IDC_LIST_USER),
+				hInst,
+				NULL);
+		}
+		break;
 	case WM_CLIENT_SOCKET:
 		{
 			int wmEvent=WSAGETSELECTEVENT(lParam);
@@ -155,26 +233,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case FD_CONNECT:
 				{
 					if(wmError!=NULL)
-						DisplayError("Connection Error",wmError,FALSE);
+						DisplayError(NULL,TEXT("Connection Error"),wmError,ALL,ERRORFOUND);
 					else
-						isConnected=TRUE;
+					{
+						EnableWindow(GetDlgItem(hWnd,IDB_SEND_TEXT),TRUE);
+					}
 				}
 				break;
 			case FD_READ:
 				{
 					if(wmError!=NULL)
-						DisplayError("Read Error",wmError,FALSE);
-					inBuffer = new TCHAR[100];
-					tmpBuffer = new TCHAR[130];
-					inBuffer="";
-					recv(client.clientSocket,inBuffer,strlen(inBuffer)+1,0);
-					sockaddr_in *s = (sockaddr_in *)&targetAddress;
-					inet_ntop(AF_INET, &s->sin_addr , ipAddressStr, sizeof ipAddressStr);
-					wsprintf(tmpBuffer,"From Server: %s",inBuffer);
-
-					SendMessage(chatWindow,LB_ADDSTRING, 0, (LPARAM)tmpBuffer);
-					delete []inBuffer;
-					delete []tmpBuffer;
+						DisplayError(NULL,TEXT("Read Error"),wmError,ALL,ERRORFOUND);
+					GetIncoming(&client,server.inSocket);
 				}
 				break;
 			}
@@ -182,69 +252,77 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		wmId    = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
+
 		// Parse the menu selections:
 		switch (wmId)
 		{
-		case WM_CHAR:
-			if(wParam==13)
+		case IDM_LISTUSERS:
 			{
-				// Get current selection in listbox
-				int itemIndex = (int) ::SendMessage(chatWindow, LB_GETCURSEL, (WPARAM)0, (LPARAM) 0);
-				if (itemIndex == LB_ERR)
-				{
-					// No selection
-					break;
-				}
-
-				// Get length of text in listbox
-				int textLen = (int) ::SendMessage(chatWindow, LB_GETTEXTLEN, (WPARAM) itemIndex, 0);
-
-				// Allocate buffer to store text (consider +1 for end of string)
-				TCHAR * textBuffer = new TCHAR[textLen + 1];
-
-				// Get actual text in buffer
-				::SendMessage(chatWindow, LB_GETTEXT, (WPARAM) itemIndex, (LPARAM) textBuffer );
-
-				// Show it
-				::MessageBox(NULL, textBuffer, _T("Selected Text from Listbox:"), MB_OK);
-
-				// Free text
-				delete [] textBuffer;
-
-				// Avoid dangling references
-				textBuffer = NULL;
+				//DisplayUsers(userWin);
 			}
 			break;
-		case IDM_SETTINGS:
-			DialogBox(hInst,MAKEINTRESOURCE(IDD_SETTINGS),hWnd,Settings);
+		case IDB_SEND_TEXT:
+			{
+				_tcscpy(client.sendTo,_T("PUBLIC"));
+				SendText(inputWin,server.inSocket,&client);
+				SendMessage(userWin, LB_ADDSTRING, 0, (LPARAM)client.sendMSG);
+				SendMessage(inputWin,WM_SETTEXT,256,(LPARAM)"");
+			}
 			break;
-		case IDM_LISTSERVERS:
-			DialogBox(hInst,MAKEINTRESOURCE(IDD_LISTSERVERS),hWnd,ListServers);
+		case IDM_NICKNAME:
+			DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_NICKNAME), hWnd, ChangeNickName,(LPARAM)tmpClient);
 			break;
 		case IDM_CONNECT:
-			client.clientSocket=ConnectSocket(chatWindow,hWnd);
+			{
+				if(server.isConnected)
+					break;
+				ConnectToServer(hWnd,&server,client);
+				if(server.isConnected)
+				{
+					ShowWindow(chatWin,SW_SHOW);
+					ShowWindow(inputWin,SW_SHOW);
+					ShowWindow(sendBTN,SW_SHOW);
+					EnableWindow(inputWin, TRUE);
+				}
+				
+			}
 			break;
 		case IDM_DISCONNECT:
-			if(isConnected)
-				DialogBox(hInst,MAKEINTRESOURCE(IDD_DISCONNECT ),hWnd,Disconnect);
+			{
+				if(!server.isConnected)
+					break;		
+				ShutDown(server.inSocket);
+				ShowWindow(chatWin,SW_HIDE);
+				ShowWindow(inputWin,SW_HIDE);
+				ShowWindow(sendBTN,SW_HIDE);
+				EnableWindow(inputWin, FALSE);
+				server.isConnected=FALSE;
+				
+			}
 			break;
-		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+		case IDM_LIST_SERVERS:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_LIST_SERVERS), hWnd, ListServers);
+			break;
+		case IDM_SETTINGS:
+			{
+				//if(!server.isConnected)
+				//	ZeroMemory(&client,sizeof(client));
+				DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SETTINGS), hWnd, Settings,(LPARAM)&server);
+			}
 			break;
 		case IDM_EXIT:
-			{
-				DisconnectSocket();
-				DestroyWindow(hWnd);
-			}
+			DestroyWindow(hWnd);
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 		break;
 	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code here...
-		EndPaint(hWnd, &ps);
+		{
+			hdc = BeginPaint(hWnd, &ps);
+
+			EndPaint(hWnd, &ps);
+		}
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -252,22 +330,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
+	client=(*tmpClient);
+	_freea(inBuffer);
 	return 0;
 }
 
-// Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	UNREFERENCED_PARAMETER(lParam);
+	BOOL isSigned=FALSE;
+	BOOL *didPass=FALSE;
+	int len=0;
+	static serverStruct *tmpServer;
+
 	switch (message)
 	{
 	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
+		{
+			tmpServer=(serverStruct*)lParam;
+
+			SetDlgItemInt(hDlg,IDC_PORTNO,tmpServer->portNo,isSigned);
+			SetDlgItemText(hDlg,IDC_IPADDRESS,(LPCWSTR)tmpServer->ipAddress);
+
+			return (INT_PTR)TRUE;
+		}
 
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
+			if (LOWORD(wParam) == IDOK )	
+			{																		// then save the new data
+				tmpServer->portNo=GetDlgItemInt(hDlg, IDC_PORTNO, didPass,isSigned);
+				GetDlgItemText(hDlg, IDC_IPADDRESS,tmpServer->ipAddress,INET_ADDRSTRLEN );
+			}
 			return (INT_PTR)TRUE;
 		}
 		break;
@@ -284,7 +379,6 @@ INT_PTR CALLBACK ListServers(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 		return (INT_PTR)TRUE;
 
 	case WM_COMMAND:
-
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
@@ -295,170 +389,27 @@ INT_PTR CALLBACK ListServers(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 	return (INT_PTR)FALSE;
 }
 
-INT_PTR CALLBACK Disconnect(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ChangeNickName(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	boolean closeWindow;
+	static clientStruct *tmpClient;
 
-	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
 	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
-	case WM_COMMAND:
-
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-			closeWindow = (IsDlgButtonChecked(hDlg,IDC_ACTIVE) || IsDlgButtonChecked(hDlg,IDC_ALL));
-			if ((LOWORD(wParam) == IDOK) && closeWindow)
-			{
-				DestroyWindow(chatWindow);
-				DisconnectSocket();
-			}
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
-}
-
-INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	BOOL isSigned=FALSE;
-	BOOL *didPass=FALSE;
-
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
+		tmpClient=(clientStruct *)lParam;
+		SendDlgItemMessage(hDlg,IDC_NICKNAME,EM_LIMITTEXT,255,0);
+		SetDlgItemText(hDlg,IDC_NICKNAME,tmpClient->nickName);
+		return (INT_PTR)FALSE;
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
-			if (LOWORD(wParam))
-			{
-				int len = GetWindowTextLength(GetDlgItem(hDlg, IDC_NICKNAME));
-				if (len>0)
-					GetDlgItemText(hDlg, IDC_NICKNAME, client.nickName,len+1);
-				else
-					strcpy(client.nickName,"User");
-
-				client.privateChat=IsDlgButtonChecked(hDlg,IDC_PRIVATE_CHAT);
-
-				if ( GetWindowTextLength(GetDlgItem(hDlg, IDC_PORTNO)) >0)
-					client.portNo=GetDlgItemInt(hDlg,IDC_PORTNO,didPass,isSigned);
-				else
-					client.portNo=6000;
-
-				len = GetWindowTextLength(GetDlgItem(hDlg, IDC_IPADDRESS));
-				if (len>0)
-					GetDlgItemText(hDlg, IDC_IPADDRESS, client.ipAddress,len+1);
-				else
-					strcpy(client.ipAddress,"192.168.1.110");
-
-				MessageBox(hDlg, client.nickName, (client.privateChat ? "Private":"Public"),MB_OK);
-			}
+			int len = GetWindowTextLength(GetDlgItem(hDlg, IDC_NICKNAME));
+			if((len>0) && (LOWORD(wParam) == IDOK))
+				GetDlgItemText(hDlg, IDC_NICKNAME,tmpClient->nickName,len+1);
 			return (INT_PTR)TRUE;
 		}
 		break;
 	}
 	return (INT_PTR)FALSE;
-}
-
-INT_PTR CALLBACK NickName(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-
-			return (INT_PTR)TRUE;
-		}
-
-		break;
-	}
-	return (INT_PTR)FALSE;
-}
-
-int ConnectSocket(HWND &chatWindow,HWND hWnd)
-{
-	addrinfo	hints,
-		*sAddr;
-	char strPortNo[10]="";
-	WORD wVersionRequested = MAKEWORD(2, 2);
-	WSADATA wsaData;
-	int serverSocket;
-
-	chatWindow = CreateWindow(	"LISTBOX",
-		"Chat Window",
-		WS_CHILD|WS_VISIBLE|ES_LEFT|WS_BORDER|
-		ES_READONLY|WS_VSCROLL|WS_HSCROLL|WS_MAXIMIZEBOX|
-		WS_MINIMIZEBOX|WS_OVERLAPPEDWINDOW,
-		50,50,
-		1000,400,
-		hWnd,
-		(HMENU)IDC_CLIENT,
-		hInst,
-		NULL
-		);
-	SecureZeroMemory (&hints, sizeof(hints));
-
-	if ((WSAStartup(wVersionRequested, &wsaData) != 0) || //not correct Winsock version
-		(LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2))
-	{
-		WSACleanup();
-		DisplayError("WSA Error",WSAGetLastError(),TRUE);
-	}
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-
-	_itoa(client.portNo,strPortNo,10);
-
-	if ( getaddrinfo(client.ipAddress,strPortNo, &hints, &sAddr) !=0 )
-		DisplayError("Error with address",WSAGetLastError(),TRUE);
-
-	serverSocket = socket(sAddr->ai_family, sAddr->ai_socktype, sAddr->ai_protocol);
-
-	if ( WSAAsyncSelect( serverSocket,hWnd,WM_CLIENT_SOCKET,FD_CONNECT | FD_READ))
-	{
-		int wsaError=WSAGetLastError(); // in case it changes after close socket
-		closesocket(serverSocket);
-		WSACleanup();
-		DisplayError( "WSAAsyncSelect error",wsaError,TRUE);
-	}
-
-	boolean bOptVal = TRUE;
-
-	if(setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, (char *) &bOptVal, sizeof(int)) == SOCKET_ERROR)
-	{
-		DisplayError("getsockopt for SO_KEEPALIVE failed with error: ", WSAGetLastError(),FALSE);
-	}
-
-	isConnected = (connect(serverSocket,(SOCKADDR*)&sAddr,sizeof(SOCKADDR))!=SOCKET_ERROR);
-	return serverSocket;
-}
-
-int DisconnectSocket(void)
-{
-	if(!isConnected)
-		return 1;
-	int errorStatus=0;
-	if (closesocket(client.clientSocket) == SOCKET_ERROR)
-	{
-		errorStatus=WSAGetLastError();
-		DisplayError("Close socket failed", errorStatus,FALSE);
-	}
-	WSACleanup();
-	isConnected=FALSE;
-	return errorStatus;
 }

@@ -1,24 +1,51 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{C0DBC2D9-67B1-4156-AD03-38A689D97386}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{B7337D26-99CC-434D-8A75-38711790F7B0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{7809D612-1E4D-4867-A2D0-F897E59A035E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}"
+EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Chat Server Installer", "Chat Server Installer\Chat Server Installer.isproj", "{34723E66-9A28-4955-BF35-3A51501519CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Win32 = CD_ROM|Win32
 		Debug|Win32 = Debug|Win32
+		DVD-5|Win32 = DVD-5|Win32
 		Release|Win32 = Release|Win32
+		SingleImage|Win32 = SingleImage|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C0DBC2D9-67B1-4156-AD03-38A689D97386}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C0DBC2D9-67B1-4156-AD03-38A689D97386}.Debug|Win32.Build.0 = Debug|Win32
-		{C0DBC2D9-67B1-4156-AD03-38A689D97386}.Release|Win32.ActiveCfg = Release|Win32
-		{C0DBC2D9-67B1-4156-AD03-38A689D97386}.Release|Win32.Build.0 = Release|Win32
-		{7809D612-1E4D-4867-A2D0-F897E59A035E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7809D612-1E4D-4867-A2D0-F897E59A035E}.Debug|Win32.Build.0 = Debug|Win32
-		{7809D612-1E4D-4867-A2D0-F897E59A035E}.Release|Win32.ActiveCfg = Release|Win32
-		{7809D612-1E4D-4867-A2D0-F897E59A035E}.Release|Win32.Build.0 = Release|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.CD_ROM|Win32.ActiveCfg = Release|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.CD_ROM|Win32.Build.0 = Release|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.Debug|Win32.Build.0 = Debug|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.DVD-5|Win32.ActiveCfg = Debug|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.DVD-5|Win32.Build.0 = Debug|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.Release|Win32.ActiveCfg = Release|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.Release|Win32.Build.0 = Release|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.SingleImage|Win32.ActiveCfg = Release|Win32
+		{B7337D26-99CC-434D-8A75-38711790F7B0}.SingleImage|Win32.Build.0 = Release|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.CD_ROM|Win32.ActiveCfg = Release|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.CD_ROM|Win32.Build.0 = Release|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.Debug|Win32.Build.0 = Debug|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.DVD-5|Win32.ActiveCfg = Debug|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.DVD-5|Win32.Build.0 = Debug|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.Release|Win32.ActiveCfg = Release|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.Release|Win32.Build.0 = Release|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.SingleImage|Win32.ActiveCfg = Release|Win32
+		{FAA035C3-098E-42C8-93A0-C4DC8E73DCA4}.SingleImage|Win32.Build.0 = Release|Win32
+		{34723E66-9A28-4955-BF35-3A51501519CE}.CD_ROM|Win32.ActiveCfg = CD_ROM
+		{34723E66-9A28-4955-BF35-3A51501519CE}.CD_ROM|Win32.Build.0 = CD_ROM
+		{34723E66-9A28-4955-BF35-3A51501519CE}.Debug|Win32.ActiveCfg = DVD-5
+		{34723E66-9A28-4955-BF35-3A51501519CE}.Debug|Win32.Build.0 = DVD-5
+		{34723E66-9A28-4955-BF35-3A51501519CE}.DVD-5|Win32.ActiveCfg = DVD-5
+		{34723E66-9A28-4955-BF35-3A51501519CE}.DVD-5|Win32.Build.0 = DVD-5
+		{34723E66-9A28-4955-BF35-3A51501519CE}.Release|Win32.ActiveCfg = SingleImage
+		{34723E66-9A28-4955-BF35-3A51501519CE}.Release|Win32.Build.0 = SingleImage
+		{34723E66-9A28-4955-BF35-3A51501519CE}.SingleImage|Win32.ActiveCfg = SingleImage
+		{34723E66-9A28-4955-BF35-3A51501519CE}.SingleImage|Win32.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
