@@ -1,8 +1,8 @@
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include "Help.h"
-#include <Mstcpip.h>
 #include "Strings.h"
+#include "DataStructures.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -15,45 +15,19 @@
 #define WIN32_LEAN_AND_MEAN
 #define BUFFER_SIZE 1024
 
-struct clientStruct {
-	SOCKET	inSocket;
-	TCHAR	nickName[50],
-			sendTo[50],
-			sendMSG[BUFFER_SIZE];
-	u_short portNo;
-	TCHAR	ipAddress[INET_ADDRSTRLEN];
-	clientStruct *next;
-};
-
-struct clientStructA {
-	char sendFrom[50],
-		sendTo[50],
-		sendMSG[BUFFER_SIZE];
-};
-
-struct serverStruct {
-	SOCKET	inSocket;
-	u_short portNo;
-	TCHAR ipAddress[INET_ADDRSTRLEN];
-	int maxConnections,
-		noConnections,
-		isConnected;
-};
-
 // Server
 
+TCHAR *DeleteClient(clientStruct **,int);
 int StartServer(HWND ,serverStruct *);
-int GetIncoming(clientStruct *,int );
+void ReadSocket(HWND ,LPARAM ,serverStruct *,clientStruct **);
 int AddConnection(clientStruct **,int, int);
 SOCKET GetClosedSocket(struct clientStruct *);
 int ShutDown(SOCKET);
-void ReadSocket(HWND ,LPARAM ,serverStruct *,clientStruct **);
-TCHAR *DeleteClient(clientStruct **,int );
 void SendText(HWND ,SOCKET, clientStruct *);
 void RelayMSG(HWND ,clientStruct *,SOCKET);
-SOCKET GetClient(clientStruct *,TCHAR *);
 
 // Client
 
-int GetIncoming(clientStruct *);
+clientStruct FindClient(clientStruct *,TCHAR *);
+int ClientIncoming(SOCKET,clientStruct *);
 BOOLEAN ConnectToServer(HWND,serverStruct *,clientStruct );

@@ -14,6 +14,29 @@
 /******   Server specific functions   ******/
 /******                               ******/
 /*******************************************/
+TCHAR *DeleteClient(clientStruct **clients,int delClient)
+{
+	clientStruct *currentClient=*clients;
+	clientStruct *tmpClient=*clients;
+	TCHAR *tmpUser=tmpClient->ipAddress;
+
+	DisplayError(NULL,TEXT(__FUNCSIG__),0,LOG,NOTICE);
+
+	while(currentClient)
+	{
+		if(currentClient->inSocket==delClient)
+		{
+			*clients=tmpClient->next;
+			tmpUser=tmpClient->ipAddress;
+			delete(tmpClient);
+			return tmpUser;
+		}
+		else
+			currentClient=currentClient->next;
+	}
+	delete(currentClient);
+	return '\0';
+}
 
 int StartServer(HWND hWnd,serverStruct *server)
 {
@@ -94,25 +117,72 @@ int StartServer(HWND hWnd,serverStruct *server)
 	return wsaError;
 }
 
-int GetIncoming(clientStruct *clients,int maxSockets)
+void ReadSocket(HWND hWnd,LPARAM lParam,serverStruct *server,clientStruct **clients)
 {
-	int sender=0;
-	int szRead=0;
-	int structSize=sizeof(clientStruct)*sizeof(TCHAR);
+	int wmEvent=WSAGETSELECTEVENT(lParam);
+	int wmError=WSAGETSELECTERROR(lParam);
+	clientStruct  *clientCopy=*clients;
 
+	TCHAR incomingMSG[BUFFER_SIZE*sizeof(TCHAR)];
+	int bufferSize=BUFFER_SIZE*sizeof(TCHAR);
 
-	DisplayError(NULL,TEXT(__FUNCSIG__),0,LOG|WINDOW,NOTICE);
+	_tcscpy(incomingMSG,_T(""));
 
-	while((clients!=NULL) && (szRead==0))
-	{	// Loop through all the known sockets
-		// If data is waiting to be read recv returns size of data read
-		// If it returns 0 the connection is closed
-		sender=clients->inSocket;
-		szRead=recv(sender,(char*)&clients,structSize,0);
-		if(0>szRead)
-			clients=(clients->next);
+	switch(wmEvent)
+	{
+	case FD_ACCEPT:
+		{
+			if(wmError!=NULL)
+				DisplayError(NULL,TEXT("Connection Error"),wmError,ALL,ERRORFOUND);
+			else
+			{
+				server->noConnections=AddConnection(&clientCopy,server->inSocket,server->noConnections);	// Add new connection
+				if(hWnd!=NULL)												// Don't display message if window not open
+				{
+					StringCbPrintf(incomingMSG, bufferSize,TEXT("[No %d/%d] connection(s) from IP: %s"),server->noConnections,server->maxConnections,(*clients)->ipAddress);
+					SendMessage(hWnd,LB_ADDSTRING,0,(LPARAM)incomingMSG);
+				}
+			}
+		}
+		break;
+	case FD_READ:
+		{
+			int szRead=0;
+			int sender=0;
+			int structSize=sizeof(clientStruct)*sizeof(TCHAR);
+			clientStruct newData={'\0'};
+
+			while((clients!=NULL) && (szRead==0))
+			{	// Loop through all the known sockets
+				// If data is waiting to be read recv returns size of data read
+				// If it returns 0 the connection is closed
+				sender=clientCopy->inSocket;
+				szRead=recv(sender,(char*)&newData,structSize,0);
+				if(0>szRead)
+					clientCopy=clientCopy->next;
+				else
+				{
+					_tcscpy(clientCopy->nickName,newData.nickName);
+					_tcscpy(clientCopy->sendMSG,newData.sendMSG);
+					_tcscpy(clientCopy->sendTo,newData.sendTo);
+				}
+			}
+			if(sender>0)
+				RelayMSG(hWnd,clientCopy,sender);                          // Send message to relevant clients
+		}
+		break;
+	case FD_CLOSE:
+		{
+			SOCKET closedSocket=GetClosedSocket((*clients));                  // Find out which socket closed
+			if((closesocket(closedSocket)==0) && (IsWindowVisible(hWnd)))// Socket found, only display info if hWnd open
+			{
+				StringCbPrintf(incomingMSG,100,TEXT("Disconnected : %s"),DeleteClient(clients,closedSocket));  // Display msg IP of client and data & time
+				SendMessage(hWnd,LB_ADDSTRING,0, (LPARAM)incomingMSG);
+			}
+		}
+		break;
 	}
-	return sender;
+	*clients=clientCopy;
 }
 
 int AddConnection(clientStruct **clients,int inSocket,int noConnections)
@@ -165,79 +235,6 @@ int ShutDown(SOCKET s)
 	return errorStatus;
 }
 
-void ReadSocket(HWND hWnd,LPARAM lParam,serverStruct *server,clientStruct **clients)
-{
-	int wmEvent=WSAGETSELECTEVENT(lParam);
-	int wmError=WSAGETSELECTERROR(lParam);
-
-	TCHAR incomingMSG[BUFFER_SIZE];
-	int bufferSize=BUFFER_SIZE*sizeof(TCHAR);
-	clientStruct clientMSG={'\0'};
-
-	_tcscpy(incomingMSG,_T(""));
-
-	switch(wmEvent)
-	{
-	case FD_ACCEPT:
-		{
-			if(wmError!=NULL)
-				DisplayError(NULL,TEXT("Connection Error"),wmError,ALL,ERRORFOUND);
-			else
-			{
-				server->noConnections=AddConnection(&(*clients),server->inSocket,server->noConnections);	// Add new connection
-				if(hWnd!=NULL)												// Don't display message if window not open
-				{
-					StringCbPrintf(incomingMSG, bufferSize,TEXT("[No %d/%d] connection(s) from IP: %s"),server->noConnections,server->maxConnections,(*clients)->ipAddress);
-					SendMessage(hWnd,LB_ADDSTRING,0,(LPARAM)incomingMSG);
-				}
-			}
-		}
-		break;
-	case FD_READ:
-		{
-			clientStruct *tmpC=(*clients);
-			int sender=GetIncoming(&(*tmpC),server->noConnections); // Get incoming message
-			if(sender>0)
-				RelayMSG(hWnd,(*clients),sender);							// Send message to relevant clients
-		}
-		break;
-	case FD_CLOSE:
-		{
-			SOCKET closedSocket=GetClosedSocket((*clients));                  // Find out which socket closed
-			if((closesocket(closedSocket)==0) && (IsWindowVisible(hWnd)))// Socket found, only display info if hWnd open
-			{
-				StringCbPrintf(incomingMSG,100,TEXT("Disconnected : %s"),DeleteClient(&(*clients),closedSocket));  // Display msg IP of client and data & time
-				SendMessage(hWnd,LB_ADDSTRING,0, (LPARAM)incomingMSG);
-			}
-		}
-		break;
-	}
-}
-
-TCHAR *DeleteClient(clientStruct **clients,int clientSocket)
-{
-	clientStruct *currentClient=*clients;
-	clientStruct *tmpClient=*clients;
-	TCHAR *tmpUser=tmpClient->ipAddress;
-
-	DisplayError(NULL,TEXT(__FUNCSIG__),0,ALL,NOTICE);
-
-	while(currentClient)
-	{
-		if(currentClient->inSocket==clientSocket)
-		{
-			*clients=tmpClient->next;
-			tmpUser=tmpClient->ipAddress;
-			delete(tmpClient);
-			return tmpUser;
-		}
-		else
-			currentClient=currentClient->next;
-	}
-	delete(currentClient);
-	return '\0';
-}
-
 // Used by the client
 
 void SendText(HWND inputWin,SOCKET outSocket,clientStruct *newMSG) // Send text from user to server - Public Chat
@@ -262,6 +259,7 @@ void RelayMSG(HWND hWnd,clientStruct *clients,SOCKET outSocket)
 	BOOLEAN sendAll = FALSE;
 	TCHAR tmpBuffer[BUFFER_SIZE];
 	clientStruct *tmpClients=clients;
+	clientStruct dataToSend={'\0'};
 
 	DisplayError(NULL,TEXT(__FUNCSIG__),0,LOG|WINDOW,NOTICE);
 
@@ -270,6 +268,10 @@ void RelayMSG(HWND hWnd,clientStruct *clients,SOCKET outSocket)
 	{
 		tmpClients=tmpClients->next;
 	}
+	_tcscpy(dataToSend.nickName,tmpClients->nickName);
+	_tcscpy(dataToSend.sendMSG,tmpClients->sendMSG);
+	_tcscpy(dataToSend.sendTo,tmpClients->sendTo);
+
 	// Sender not found so leave
 
 	if(tmpClients==NULL)
@@ -299,24 +301,15 @@ void RelayMSG(HWND hWnd,clientStruct *clients,SOCKET outSocket)
 		while(tmpClients!=NULL)													// Send to all users except the sender
 		{
 			if(tmpClients->inSocket!=outSocket)
-				send(tmpClients->inSocket,(char*)&clients,sizeof(clientStruct),0);
+				send(tmpClients->inSocket,(char*)&dataToSend,sizeof(clientStruct),0);
 			tmpClients=tmpClients->next;
 		}
 	}
 	else																		// Send a single user
-		send(GetClient(clients,clients->sendTo),(char *)&clients,sizeof(clientStruct),0);
-}
-
-SOCKET GetClient(clientStruct *clients,TCHAR *user)								// Get the socket of a particular user
-{
-	// Find the socket of Client based on nickName
-	while(clients!=NULL)
 	{
-		if(_tcscmp(clients->nickName,user)==0)
-			return clients->inSocket;
-		clients=clients->next;
+		clientStruct singleClient =  FindClient(clients,clients->sendTo);
+		send(singleClient.inSocket,(char*)&dataToSend,sizeof(clientStruct),0);
 	}
-	return 0;
 }
 
 /*******************************************/
@@ -324,8 +317,19 @@ SOCKET GetClient(clientStruct *clients,TCHAR *user)								// Get the socket of 
 /******   Client specific functions   ******/
 /******                               ******/
 /*******************************************/
+clientStruct FindClient(clientStruct *clientList,TCHAR *user)
+{
+	// Find the socket of Client based on nickName
+	while(clientList!=NULL)
+	{
+		if(_tcscmp(clientList->nickName,user)==0)
+			return (*clientList);
+		clientList=clientList->next;
+	}
+	return (*clientList);
+}
 
-int GetIncoming(clientStruct *clientMSG,SOCKET socket)
+int ClientIncoming(SOCKET socket,clientStruct *clientMSG)
 {
 	DisplayError(NULL,TEXT(__FUNCSIG__),0,ALL,NOTICE);
 

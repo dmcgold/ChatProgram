@@ -85,6 +85,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataStructures.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="Resource.h" />

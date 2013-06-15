@@ -21,7 +21,7 @@ ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	Settings(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	ListServers(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK	ListtoServers(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK ChangeNickName(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -53,9 +53,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	client.portNo=6000;
 	client.next='\0';
 	client.inSocket=0;
-	_tcscpy(server.ipAddress,TEXT("192.168.1.110"));
-	server.portNo=client.portNo;
-	server.isConnected=FALSE;
+	_tcscpy(toServer.ipAddress,TEXT("192.168.1.110"));
+	toServer.portNo=client.portNo;
+	toServer.isConnected=FALSE;
 
 	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
@@ -148,7 +148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	RECT cRect = { 0 };
 	int userLength=100;
 	clientStruct *tmpClient=&client;
-	
+
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
@@ -244,7 +244,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 					if(wmError!=NULL)
 						DisplayError(NULL,TEXT("Read Error"),wmError,ALL,ERRORFOUND);
-					GetIncoming(&client,server.inSocket);
+					ClientIncoming(toServer.inSocket,&client);
 				}
 				break;
 			}
@@ -264,7 +264,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDB_SEND_TEXT:
 			{
 				_tcscpy(client.sendTo,_T("PUBLIC"));
-				SendText(inputWin,server.inSocket,&client);
+				SendText(inputWin,toServer.inSocket,&client);
 				SendMessage(userWin, LB_ADDSTRING, 0, (LPARAM)client.sendMSG);
 				SendMessage(inputWin,WM_SETTEXT,256,(LPARAM)"");
 			}
@@ -274,40 +274,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case IDM_CONNECT:
 			{
-				if(server.isConnected)
+				if(toServer.isConnected)
 					break;
-				ConnectToServer(hWnd,&server,client);
-				if(server.isConnected)
+				ConnectToServer(hWnd,&toServer,client);
+				if(toServer.isConnected)
 				{
 					ShowWindow(chatWin,SW_SHOW);
 					ShowWindow(inputWin,SW_SHOW);
 					ShowWindow(sendBTN,SW_SHOW);
 					EnableWindow(inputWin, TRUE);
 				}
-				
 			}
 			break;
 		case IDM_DISCONNECT:
 			{
-				if(!server.isConnected)
-					break;		
-				ShutDown(server.inSocket);
+				if(!toServer.isConnected)
+					break;
+				ShutDown(toServer.inSocket);
 				ShowWindow(chatWin,SW_HIDE);
 				ShowWindow(inputWin,SW_HIDE);
 				ShowWindow(sendBTN,SW_HIDE);
 				EnableWindow(inputWin, FALSE);
-				server.isConnected=FALSE;
-				
+				toServer.isConnected=FALSE;
 			}
 			break;
 		case IDM_LIST_SERVERS:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_LIST_SERVERS), hWnd, ListServers);
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_LIST_SERVERS), hWnd, ListtoServers);
 			break;
 		case IDM_SETTINGS:
 			{
-				//if(!server.isConnected)
+				//if(!toServer.isConnected)
 				//	ZeroMemory(&client,sizeof(client));
-				DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SETTINGS), hWnd, Settings,(LPARAM)&server);
+				DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SETTINGS), hWnd, Settings,(LPARAM)&toServer);
 			}
 			break;
 		case IDM_EXIT:
@@ -340,16 +338,16 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	BOOL isSigned=FALSE;
 	BOOL *didPass=FALSE;
 	int len=0;
-	static serverStruct *tmpServer;
+	static serverStruct *tmptoServer;
 
 	switch (message)
 	{
 	case WM_INITDIALOG:
 		{
-			tmpServer=(serverStruct*)lParam;
+			tmptoServer=(serverStruct*)lParam;
 
-			SetDlgItemInt(hDlg,IDC_PORTNO,tmpServer->portNo,isSigned);
-			SetDlgItemText(hDlg,IDC_IPADDRESS,(LPCWSTR)tmpServer->ipAddress);
+			SetDlgItemInt(hDlg,IDC_PORTNO,tmptoServer->portNo,isSigned);
+			SetDlgItemText(hDlg,IDC_IPADDRESS,(LPCWSTR)tmptoServer->ipAddress);
 
 			return (INT_PTR)TRUE;
 		}
@@ -358,10 +356,10 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
-			if (LOWORD(wParam) == IDOK )	
+			if (LOWORD(wParam) == IDOK )
 			{																		// then save the new data
-				tmpServer->portNo=GetDlgItemInt(hDlg, IDC_PORTNO, didPass,isSigned);
-				GetDlgItemText(hDlg, IDC_IPADDRESS,tmpServer->ipAddress,INET_ADDRSTRLEN );
+				tmptoServer->portNo=GetDlgItemInt(hDlg, IDC_PORTNO, didPass,isSigned);
+				GetDlgItemText(hDlg, IDC_IPADDRESS,tmptoServer->ipAddress,INET_ADDRSTRLEN );
 			}
 			return (INT_PTR)TRUE;
 		}
@@ -370,7 +368,7 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	return (INT_PTR)FALSE;
 }
 
-INT_PTR CALLBACK ListServers(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ListtoServers(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);
 	switch (message)

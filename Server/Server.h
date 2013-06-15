@@ -1,4 +1,5 @@
-#include "Network.h"
+#include "DataStructures.h"             // Client Structure, Server Structure FindClient function,Delete client function
+#include "Network.h"                    // Functions to manipulate networking
 #include <windows.h>
 #include <string.h>
 #include "Help.h"
@@ -9,7 +10,6 @@
 #include <tchar.h>
 #include "Strings.h"
 #include "GUI.h"
-
 
 #pragma once
 

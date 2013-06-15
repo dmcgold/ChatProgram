@@ -955,3 +955,136 @@ Error Number : 10035
 Error Code: WSAEWOULDBLOCK
 Error Description: Resource temporarily unavailable.
 -------------------------------------------------------------------------------
+Notice logged: [06/06/2013]:[01:2642]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [06/06/2013]:[01:26:42]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [13/06/2013]:[10:5148]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [13/06/2013]:[10:51:48]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [13/06/2013]:[11:4648]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [13/06/2013]:[11:46:48]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[11:1432]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[11:14:32]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[11:2551]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[11:25:51]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Serious Error logged [15/06/2013]:[11:25:54]
+Error Number : 10061
+Error Code: WSAECONNREFUSED
+Error Description: Connection refused.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[11:2706]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[11:27:06]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[11:3136]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[11:31:36]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[11:3659]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[11:36:59]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[12:0121]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[12:01:21]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[12:0640]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[12:06:40]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[23:3741]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[23:37:41]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[23:3824]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[23:38:24]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[23:3955]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[23:39:55]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[23:4156]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[23:41:56]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[23:4240]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[23:42:40]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------
+Notice logged: [15/06/2013]:[23:4617]
+unsigned char __cdecl ConnectToServer(struct HWND__ *,struct serverStruct *,struct clientStruct)
+-------------------------------------------------------------------------------
+Warning message logged [15/06/2013]:[23:46:17]
+Error Number : 10035
+Error Code: WSAEWOULDBLOCK
+Error Description: Resource temporarily unavailable.
+-------------------------------------------------------------------------------

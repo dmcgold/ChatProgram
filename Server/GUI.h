@@ -3,6 +3,8 @@
 #include <commctrl.h>
 #include <Windows.h>
 
+#pragma once
+
 INT_PTR CALLBACK Settings(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK ListClients(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK LogWindow(HWND, UINT, WPARAM, LPARAM);
